@@ -33,12 +33,12 @@ make O=$TMPDIR olddefconfig
 if ! (command -v zstd &>/dev/null); then
     ./scripts/config --file $TMPDIR/.config --disable KERNEL_ZSTD
     ./scripts/config --file $TMPDIR/.config --disable MODULE_COMPRESS_ZSTD
-    ./scripts/config --file $TMPDIR/.config --enable KERNEL_GZIP
+    ./scripts/config --file $TMPDIR/.config --enable KERNEL_XZ
     ./scripts/config --file $TMPDIR/.config --enable MODULE_COMPRESS_XZ
 fi
 make O=$TMPDIR olddefconfig
 
-make O=$TMPDIR -j$(nproc) bindeb-pkg || make O=$TMPDIR bindeb-pkg
+make O=$TMPDIR -j$(nproc) bindeb-pkg
 
 OUTDIR="/data/$USER/amdsev/snp-host-$(hostname).$TAG"
 mkdir -p "$OUTDIR"
