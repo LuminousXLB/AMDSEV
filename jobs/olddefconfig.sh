@@ -32,7 +32,9 @@ make O=$TMPDIR olddefconfig
 ./scripts/config --file $TMPDIR/.config --disable MODULE_SIG_KEY
 if ! (command -v zstd &>/dev/null); then
     ./scripts/config --file $TMPDIR/.config --disable KERNEL_ZSTD
+    ./scripts/config --file $TMPDIR/.config --disable MODULE_COMPRESS_ZSTD
     ./scripts/config --file $TMPDIR/.config --enable KERNEL_GZIP
+    ./scripts/config --file $TMPDIR/.config --enable MODULE_COMPRESS_XZ
 fi
 make O=$TMPDIR olddefconfig
 
