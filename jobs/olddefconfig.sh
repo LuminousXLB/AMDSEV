@@ -23,9 +23,10 @@ cd "$SRCDIR"
 
 TAG=$(git rev-parse --short HEAD)
 WORKDIR=/tmp/linux.85ef1ac03/build
+LOCALVERSION="$TAG-defconfig"
 
 make O=$WORKDIR olddefconfig
-./scripts/config --file $WORKDIR/.config --set-str LOCALVERSION "-$TAG-defconfig"
+./scripts/config --file $WORKDIR/.config --set-str LOCALVERSION "-$LOCALVERSION"
 ./scripts/config --file $WORKDIR/.config --disable SYSTEM_TRUSTED_KEYS
 ./scripts/config --file $WORKDIR/.config --disable SYSTEM_REVOCATION_KEYS
 ./scripts/config --file $WORKDIR/.config --disable MODULE_SIG_KEY
@@ -39,6 +40,6 @@ make O=$WORKDIR olddefconfig
 
 make O=$WORKDIR -j$(nproc) bindeb-pkg
 
-OUTDIR="/data/$USER/amdsev/linux-$TAG-defconfig.$(hostname)"
+OUTDIR="/data/$USER/amdsev/linux-$LOCALVERSION"
 mkdir -p "$OUTDIR"
 find "$WORKDIR/.." -maxdepth 1 -type f -exec mv {} "$OUTDIR" \;
