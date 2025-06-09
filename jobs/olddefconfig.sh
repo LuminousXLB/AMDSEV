@@ -22,23 +22,23 @@ fi
 cd "$SRCDIR"
 
 TAG=$(git rev-parse --short HEAD)
-# TMPDIR=$(mktemp -d /tmp/$USER.$TAG.XXXXXX)
-TMPDIR=/tmp/jiamin.85ef1ac03.I0p4P2
+WORKDIR=/tmp/linux.85ef1ac03/build
 
-make O=$TMPDIR olddefconfig
-./scripts/config --file $TMPDIR/.config --set-str LOCALVERSION "-snp-host-$TAG"
-./scripts/config --file $TMPDIR/.config --disable SYSTEM_TRUSTED_KEYS
-./scripts/config --file $TMPDIR/.config --disable SYSTEM_REVOCATION_KEYS
-./scripts/config --file $TMPDIR/.config --disable MODULE_SIG_KEY
+make O=$WORKDIR olddefconfig
+./scripts/config --file $WORKDIR/.config --set-str LOCALVERSION "-$TAG-defconfig"
+./scripts/config --file $WORKDIR/.config --disable SYSTEM_TRUSTED_KEYS
+./scripts/config --file $WORKDIR/.config --disable SYSTEM_REVOCATION_KEYS
+./scripts/config --file $WORKDIR/.config --disable MODULE_SIG_KEY
 if ! (command -v zstd &>/dev/null); then
-    ./scripts/config --file $TMPDIR/.config --disable KERNEL_ZSTD
-    ./scripts/config --file $TMPDIR/.config --disable MODULE_COMPRESS_ZSTD
-    ./scripts/config --file $TMPDIR/.config --enable KERNEL_XZ
-    ./scripts/config --file $TMPDIR/.config --enable MODULE_COMPRESS_XZ
+    ./scripts/config --file $WORKDIR/.config --disable KERNEL_ZSTD
+    ./scripts/config --file $WORKDIR/.config --disable MODULE_COMPRESS_ZSTD
+    ./scripts/config --file $WORKDIR/.config --enable KERNEL_XZ
+    ./scripts/config --file $WORKDIR/.config --enable MODULE_COMPRESS_XZ
 fi
-make O=$TMPDIR olddefconfig
+make O=$WORKDIR olddefconfig
 
-make O=$TMPDIR -j$(nproc) bindeb-pkg
+make O=$WORKDIR -j$(nproc) bindeb-pkg
 
-OUTDIR="/data/$USER/amdsev/snp-host-$(hostname).$TAG"
+OUTDIR="/data/$USER/amdsev/linux-$TAG-defconfig.$(hostname)"
 mkdir -p "$OUTDIR"
+find "$WORKDIR/.." -maxdepth 1 -type f -exec mv {} "$OUTDIR" \;
