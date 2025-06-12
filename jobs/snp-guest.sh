@@ -39,11 +39,11 @@ if ! (command -v zstd &>/dev/null); then
     ./scripts/config --file $WORKDIR/.config --enable KERNEL_XZ
     ./scripts/config --file $WORKDIR/.config --enable MODULE_COMPRESS_XZ
 fi
-make O=$WORKDIR olddefconfig
-
 ./scripts/config --file $WORKDIR/.config --enable KVM_GUEST
 ./scripts/config --file $WORKDIR/.config --enable VIRT_DRIVERS
 ./scripts/config --file $WORKDIR/.config --enable SEV_GUEST
+
+make O=$WORKDIR olddefconfig
 
 cfgs=(
     KVM_GUEST

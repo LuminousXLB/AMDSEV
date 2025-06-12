@@ -40,7 +40,6 @@ if ! (command -v zstd &>/dev/null); then
     ./scripts/config --file $WORKDIR/.config --enable KERNEL_XZ
     ./scripts/config --file $WORKDIR/.config --enable MODULE_COMPRESS_XZ
 fi
-make O=$WORKDIR olddefconfig
 
 ./scripts/config --file $WORKDIR/.config --enable KVM
 ./scripts/config --file $WORKDIR/.config --enable KVM_AMD
@@ -50,6 +49,8 @@ make O=$WORKDIR olddefconfig
 ./scripts/config --file $WORKDIR/.config --enable KVM_AMD_SEV
 ./scripts/config --file $WORKDIR/.config --enable AMD_MEM_ENCRYPT
 ./scripts/config --file $WORKDIR/.config --disable AMD_MEM_ENCRYPT_ACTIVE_BY_DEFAULT
+
+make O=$WORKDIR olddefconfig
 
 cfgs=(
     KVM
