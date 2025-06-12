@@ -45,8 +45,10 @@ else
     popd >/dev/null
 fi
 
+cd "$SRCDIR"
+
 TAG=$(git rev-parse --short HEAD)
-WORKDIR=/tmp/qemu-$TAG/build
+WORKDIR=/tmp/qemu-$TAG-build
 
 mkdir -p "$WORKDIR"
 cd "$WORKDIR"
