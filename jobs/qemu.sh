@@ -12,11 +12,11 @@ else
     export PKG_CONFIG_PATH="$PREFIX/lib/x86_64-linux-gnu/pkgconfig:$PKG_CONFIG_PATH"
 fi
 
-if [ ! command -v meson ] &>/dev/null; then
+if ! command -v meson &>/dev/null; then
     python3 -m pip install --user meson
 fi
 
-if [ ! command -v ninja ] &>/dev/null; then
+if ! command -v ninja &>/dev/null; then
     python3 -m pip install --user ninja
 fi
 
@@ -32,6 +32,10 @@ if ! pkg-config --exists glib-2.0; then
     meson compile -C _build
     meson install -C _build
 fi
+
+command -v meson
+command -v ninja
+pkg-config --exists glib-2.0
 
 SRCDIR="/local_data/$USER/qemu-snp-latest"
 
@@ -53,11 +57,6 @@ WORKDIR=/tmp/qemu-$TAG-build
 mkdir -p "$WORKDIR"
 cd "$WORKDIR"
 
-command -v meson
-command -v ninja
-pkg-config --exists glib-2.0
-
-$SRCDIR/configure --disable-docs --target-list=x86_64-softmmu --prefix=$PREFIX
-
-make -j$(nproc)
-make -j$(nproc) install
+$SRCDIR/configure --prefix=$PREFIX --target-list=x86_64-softmmu --disable-docs --static
+ninja
+ninja install
