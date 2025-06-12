@@ -57,6 +57,7 @@ WORKDIR=/tmp/qemu-$TAG-build
 mkdir -p "$WORKDIR"
 cd "$WORKDIR"
 
-$SRCDIR/configure --prefix=$PREFIX --target-list=x86_64-softmmu --disable-docs --disable-rdma --static
+$SRCDIR/configure --prefix=$PREFIX --target-list=x86_64-softmmu --disable-docs --disable-rdma --enable-slirp --static
+meson configure --default-library=static
 ninja
 ninja install
