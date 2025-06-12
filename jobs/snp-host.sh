@@ -66,6 +66,7 @@ for cfg in "${cfgs[@]}"; do
     echo "$cfg = $(./scripts/config --file $WORKDIR/.config --state $cfg)"
 done
 
+rm -f "$WORKDIR/.version"
 make O=$WORKDIR -j$(nproc) LOCALVERSION=
 make O=$WORKDIR -j$(nproc) LOCALVERSION= bindeb-pkg
 

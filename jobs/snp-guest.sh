@@ -57,6 +57,7 @@ done
 
 find "$WORKDIR" -maxdepth 1 -name "*$LOCALVERSION*.tar.xz" -delete
 
+rm -f "$WORKDIR/.version"
 make O=$WORKDIR -j$(nproc) LOCALVERSION=
 make O=$WORKDIR -j$(nproc) LOCALVERSION= bindeb-pkg tarxz-pkg
 
