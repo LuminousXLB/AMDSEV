@@ -23,7 +23,7 @@ OUTDIR="/data/$USER/amdsev/qemu-$TAG"
 mkdir -p "$WORKDIR"
 cd "$WORKDIR"
 
-$(SRCDIR)/configure --target-list=x86_64-softmmu --prefix=$OUTDIR
+$SRCDIR/configure --target-list=x86_64-softmmu --prefix=$OUTDIR
 
 make -j$(nproc)
 make -j$(nproc) install
