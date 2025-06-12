@@ -6,7 +6,11 @@ set -euox pipefail
 
 PREFIX="/data/$USER/amdsev/usr"
 
-export PKG_CONFIG_PATH=$PREFIX/lib/x86_64-linux-gnu/pkgconfig:$PKG_CONFIG_PATH
+if [ -z "${PKG_CONFIG_PATH+x}" ]; then
+    export PKG_CONFIG_PATH="$PREFIX/lib/x86_64-linux-gnu/pkgconfig"
+else
+    export PKG_CONFIG_PATH="$PREFIX/lib/x86_64-linux-gnu/pkgconfig:$PKG_CONFIG_PATH"
+fi
 
 if [ ! command -v meson ] &>/dev/null; then
     python3 -m pip install --user meson
