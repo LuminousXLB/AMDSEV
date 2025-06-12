@@ -28,7 +28,7 @@ if ! pkg-config --exists glib-2.0; then
 
     tar xf "$TAR" -C /tmp
     cd /tmp/glib-2.85.0
-    meson setup --prefix=$PREFIX --buildtype=release -Dtests=false _build
+    meson setup --prefix=$PREFIX --buildtype=release --default-library=both -Dtests=false _build
     meson compile -C _build
     meson install -C _build
 fi
