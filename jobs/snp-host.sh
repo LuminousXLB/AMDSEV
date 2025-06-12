@@ -66,7 +66,8 @@ for cfg in "${cfgs[@]}"; do
     echo "$cfg = $(./scripts/config --file $WORKDIR/.config --state $cfg)"
 done
 
-make O=$WORKDIR -j$(nproc) bindeb-pkg
+make O=$WORKDIR -j$(nproc) LOCALVERSION=
+make O=$WORKDIR -j$(nproc) LOCALVERSION= bindeb-pkg
 
 OUTDIR="/data/$USER/amdsev/linux-$LOCALVERSION"
 mkdir -p "$OUTDIR"
