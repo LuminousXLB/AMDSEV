@@ -10,7 +10,7 @@ SRCDIR="/local_data/$USER/linux-snp-guest"
 
 if [ ! -d "$SRCDIR" ]; then
     mkdir -p "$SRCDIR"
-    git clone --depth=1 --branch=snp-guest-latest https://github.com/AMDESE/linux.git "$SRCDIR"
+    git clone --quiet --depth=1 --branch=snp-guest-latest https://github.com/AMDESE/linux.git "$SRCDIR"
 else
     pushd "$SRCDIR" >/dev/null
     make -j$(nproc) distclean || true
