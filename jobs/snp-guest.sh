@@ -28,8 +28,8 @@ WORKDIR=/tmp/linux-$LOCALVERSION/build
 mkdir -p "$WORKDIR"
 make O=$WORKDIR defconfig
 
-./scripts/config --file $WORKDIR/.config --disable LOCALVERSION_AUTO
 ./scripts/config --file $WORKDIR/.config --set-str LOCALVERSION "-$LOCALVERSION"
+./scripts/config --file $WORKDIR/.config --disable LOCALVERSION_AUTO
 ./scripts/config --file $WORKDIR/.config --disable SYSTEM_TRUSTED_KEYS
 ./scripts/config --file $WORKDIR/.config --disable SYSTEM_REVOCATION_KEYS
 ./scripts/config --file $WORKDIR/.config --disable MODULE_SIG_KEY

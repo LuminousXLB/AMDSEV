@@ -29,8 +29,8 @@ mkdir -p "$WORKDIR"
 cp /boot/config-6.6.5-060605-generic "$WORKDIR/.config"
 make O=$WORKDIR olddefconfig
 
-./scripts/config --file $WORKDIR/.config --disable LOCALVERSION_AUTO
 ./scripts/config --file $WORKDIR/.config --set-str LOCALVERSION "-$LOCALVERSION"
+./scripts/config --file $WORKDIR/.config --disable LOCALVERSION_AUTO
 ./scripts/config --file $WORKDIR/.config --disable SYSTEM_TRUSTED_KEYS
 ./scripts/config --file $WORKDIR/.config --disable SYSTEM_REVOCATION_KEYS
 ./scripts/config --file $WORKDIR/.config --disable MODULE_SIG_KEY
