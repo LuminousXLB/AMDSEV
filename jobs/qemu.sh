@@ -4,6 +4,31 @@
 
 set -euox pipefail
 
+PREFIX="/data/$USER/amdsev/usr"
+
+export PKG_CONFIG_PATH=$PREFIX/lib/x86_64-linux-gnu/pkgconfig:$PKG_CONFIG_PATH
+
+if [ ! command -v meson ] &>/dev/null; then
+    python3 -m pip install --user meson
+fi
+
+if [ ! command -v ninja ] &>/dev/null; then
+    python3 -m pip install --user ninja
+fi
+
+if ! pkg-config --exists glib-2.0; then
+    TAR=/local_data/$USER/glib-2.85.0.tar.xz
+    if [ ! -f "$TAR" ]; then
+        wget https://download.gnome.org/sources/glib/2.85/glib-2.85.0.tar.xz --quiet -O "$TAR"
+    fi
+
+    tar xf "$TAR" -C /tmp
+    cd /tmp/glib-2.85.0
+    meson setup --prefix=$PREFIX --buildtype=release -Dtests=false _build
+    meson compile -C _build
+    meson install -C _build
+fi
+
 SRCDIR="/local_data/$USER/qemu-snp-latest"
 
 if [ ! -d "$SRCDIR" ]; then
@@ -18,12 +43,15 @@ fi
 
 TAG=$(git rev-parse --short HEAD)
 WORKDIR=/tmp/qemu-$TAG/build
-OUTDIR="/data/$USER/amdsev/qemu-$TAG"
 
 mkdir -p "$WORKDIR"
 cd "$WORKDIR"
 
-$SRCDIR/configure --target-list=x86_64-softmmu --prefix=$OUTDIR
+command -v meson
+command -v ninja
+pkg-config --exists glib-2.0
+
+$SRCDIR/configure --disable-docs --target-list=x86_64-softmmu --prefix=$OUTDIR
 
 make -j$(nproc)
 make -j$(nproc) install
