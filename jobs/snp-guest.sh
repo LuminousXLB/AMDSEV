@@ -55,12 +55,12 @@ for cfg in "${cfgs[@]}"; do
     echo "$cfg = $(./scripts/config --file $WORKDIR/.config --state $cfg)"
 done
 
-rm -f "$WORKDIR/*$LOCALVERSION*.tar.xz"
+find "$WORKDIR" -maxdepth 1 -name "*$LOCALVERSION*.tar.xz" -delete
+
 make O=$WORKDIR -j$(nproc) LOCALVERSION=
 make O=$WORKDIR -j$(nproc) LOCALVERSION= bindeb-pkg tarxz-pkg
 
 OUTDIR="/data/$USER/amdsev/linux-$LOCALVERSION"
 mkdir -p "$OUTDIR"
 find "$WORKDIR/.." -maxdepth 1 -type f -exec mv {} "$OUTDIR" \;
-
-mv "$WORKDIR/*$LOCALVERSION*.tar.xz" "$OUTDIR"
+find "$WORKDIR" -maxdepth 1 -name "*$LOCALVERSION*.tar.xz" -exec mv {} "$OUTDIR" \;
