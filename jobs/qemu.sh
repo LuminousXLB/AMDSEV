@@ -57,7 +57,7 @@ command -v meson
 command -v ninja
 pkg-config --exists glib-2.0
 
-$SRCDIR/configure --disable-docs --target-list=x86_64-softmmu --prefix=$OUTDIR
+$SRCDIR/configure --disable-docs --target-list=x86_64-softmmu --prefix=$PREFIX
 
 make -j$(nproc)
 make -j$(nproc) install
