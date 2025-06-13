@@ -61,3 +61,7 @@ $SRCDIR/configure --prefix=$PREFIX --target-list=x86_64-softmmu --disable-docs -
 meson configure --default-library=static
 ninja
 ninja install
+
+# Install OVMF
+curl -L https://launchpad.net/ubuntu/+archive/primary/+files/ovmf_2025.02-3ubuntu2_all.deb -o /tmp/ovmf.deb
+dpkg -x /tmp/ovmf.deb $(dirname "$PREFIX")
