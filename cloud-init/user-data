@@ -1,7 +1,6 @@
 #cloud-config
-hostname: cs5250
 users:
-  - name: ubuntu
+  - name: shenjm
     lock_passwd: false
     sudo: "ALL=(ALL) NOPASSWD:ALL"
     plain_text_passwd: "password"
