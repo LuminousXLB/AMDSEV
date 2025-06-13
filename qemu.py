@@ -25,6 +25,9 @@ def parse_args():
     )
     parser.add_argument("--seed", type=Path, help="Path to the cloud-init seed image")
     parser.add_argument("--disk", type=Path, help="Path to the hard disk image (qcow2)")
+    parser.add_argument(
+        "--monitor-socket", type=Path, help="Path to the QEMU monitor socket"
+    )
 
     parser.add_argument(
         "--enable-net",
@@ -117,8 +120,8 @@ def get_cbitpos():
     )
 
 
-def args_common(smp=4, mem=2048):
-    return [
+def args_common(smp=4, mem=2048, mon=None):
+    args = [
         "-nographic",
         "-enable-kvm",
         "-cpu",
@@ -131,6 +134,13 @@ def args_common(smp=4, mem=2048):
         f"{mem}M,slots=5,maxmem={mem+8192}M",
         "-no-reboot",
     ]
+
+    if mon:
+        args += ["-monitor", f"unix:{mon},server,nowait"]
+    else:
+        args += ["-monitor", "none"]
+
+    return args
 
 
 def args_cloud_init(seed_img: Path):
@@ -197,7 +207,7 @@ def args_snp(mem=2048, debug=True):
 def build_qemu_command(args):
     qemu_args = []
 
-    qemu_args += args_common(smp=args.smp, mem=args.mem)
+    qemu_args += args_common(smp=args.smp, mem=args.mem, mon=args.monitor_socket)
     qemu_args += args_uefi(args.uefi)
 
     if args.seed:
