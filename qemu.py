@@ -226,8 +226,7 @@ if __name__ == "__main__":
         raise RuntimeError("QEMU executable not found in {}.".format(path))
 
     cmd = ["sudo", qemu_exec, *qemu_args]
+    print(shlex.join(cmd))
 
-    if args.dry_run:
-        print(shlex.join(cmd))
-    else:
+    if not args.dry_run:
         os.execvp(cmd[0], cmd)
