@@ -140,10 +140,15 @@ def args_cloud_init(seed_img: Path):
     return ["-drive", f"file={seed_img},index=1,media=cdrom"]
 
 
-def args_network(ssh_port=2222):
+def args_network(ssh_port=-1):
+    if ssh_port > 0:
+        netdev = f"user,id=vmnic,hostfwd=tcp::{ssh_port}-:22"
+    else:
+        netdev = "user,id=vmnic"
+
     return [
         "-netdev",
-        f"user,id=vmnic,hostfwd=tcp:localhost:{ssh_port}-:22",
+        netdev,
         "-device",
         "virtio-net-pci,disable-legacy=on,iommu_platform=true,netdev=vmnic,romfile=",
     ]
