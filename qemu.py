@@ -33,6 +33,12 @@ def parse_args():
         help="Enable user-mode networking",
     )
     parser.add_argument(
+        "--disable-net",
+        action="store_false",
+        dest="enable_net",
+        help="Disable user-mode networking",
+    )
+    parser.add_argument(
         "--ssh-port",
         type=int,
         default=2222,
@@ -44,6 +50,12 @@ def parse_args():
         action="store_true",
         default=False,
         help="Enable AMD SEV-SNP support",
+    )
+    parser.add_argument(
+        "--disable-snp",
+        action="store_false",
+        dest="enable_snp",
+        help="Disable AMD SEV-SNP support",
     )
     parser.add_argument("--debug", action="store_true", help="Enable debug mode")
 
