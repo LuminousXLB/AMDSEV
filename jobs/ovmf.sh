@@ -13,11 +13,12 @@ fi
 WORKDIR="/tmp/ovmf-snp-latest"
 
 if [ -d "$WORKDIR" ]; then
-    rm -rf "$WORKDIR"
+    time rm -rf "$WORKDIR"
 fi
 
 git clone --quiet --depth=1 --branch=snp-latest https://github.com/AMDESE/ovmf.git "$WORKDIR"
 cd "$WORKDIR"
+git submodule update --init --depth=1
 git submodule | awk '{print $2}' | xargs -P0 -I{} git submodule update --init --recursive --depth=1 -- {}
 
 make -C BaseTools clean
