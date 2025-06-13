@@ -2,7 +2,7 @@
 #SBATCH --partition=mi100_mi210
 #SBATCH --cpus-per-task=64
 
-set -euox pipefail
+set -eox pipefail
 
 PREFIX="/data/$USER/amdsev/usr"
 if [ !d "$PREFIX/share/qemu" ]; then
