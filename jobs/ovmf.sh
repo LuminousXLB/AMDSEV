@@ -2,7 +2,10 @@
 #SBATCH --partition=mi100_mi210
 #SBATCH --cpus-per-task=64
 
-set -eox pipefail
+set -o pipefail #  return the exit status of the last command in the pipe that failed
+set -e          #  exit on error
+set -u          #  treat unset variables as an error
+set -x          #  print commands and their arguments as they are executed
 
 PREFIX="/data/$USER/amdsev/usr"
 if [ !d "$PREFIX/share/qemu" ]; then
@@ -24,7 +27,9 @@ git submodule | awk '{print $2}' | xargs -P0 -I{} git submodule update --init --
 make -C BaseTools clean
 make -C BaseTools -j $(getconf _NPROCESSORS_ONLN)
 
+set +eux
 . ./edksetup.sh --reconfig
+set -eux
 
 ACTIVE_PLATFORM=OvmfPkg/OvmfPkgX64.dsc
 TARGET=DEBUG
