@@ -5,6 +5,6 @@ users:
     sudo: "ALL=(ALL) NOPASSWD:ALL"
     plain_text_passwd: "password"
     shell: /bin/bash
-    ssh-authorized-keys:
+    ssh_authorized_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIP+vuocrMb3/lIJvdD8uELyh7IpsYlijkoNIMrUPoIcL jiamin@hacchead
 ssh_pwauth: true
