@@ -17,9 +17,8 @@ set -euox pipefail
 
 DISK_BASE=/data/jiamin/Fedora-Server-Guest-Generic-42-1.1.x86_64.qcow2
 DISK_OVERLAY=/tmp/fedora-overlay.qcow2
-if [ ! -f $DISK_OVERLAY ]; then
-    qemu-img create -f qcow2 -b $DISK_BASE -F qcow2 $DISK_OVERLAY 40G
-fi
+rm -f $DISK_OVERLAY
+qemu-img create -f qcow2 -b $DISK_BASE -F qcow2 $DISK_OVERLAY 40G
 
 if [ ! -f cloud-init/seed.img ]; then
     cloud-localds cloud-init/seed.img cloud-init/user-data
