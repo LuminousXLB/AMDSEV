@@ -7,7 +7,7 @@ import sys
 from pathlib import Path
 from shutil import which
 
-PREFIX = Path("/data/jiamin/amdsev/usr/")
+PREFIX = Path("/home/jiamin/AMDSEV/usr")
 
 
 def parse_args():
@@ -229,7 +229,7 @@ if __name__ == "__main__":
     args = parse_args()
     qemu_args = build_qemu_command(args)
 
-    path = "/data/{}/amdsev/usr/bin".format(os.getenv("USER", "jiamin"))
+    path = PREFIX / "bin"
     qemu_exec = which("qemu-system-x86_64", path=path)
 
     if not qemu_exec:
