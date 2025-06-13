@@ -60,7 +60,7 @@ def parse_args():
         dest="enable_snp",
         help="Disable AMD SEV-SNP support",
     )
-    parser.add_argument("--debug", action="store_true", help="Enable debug mode")
+    parser.add_argument("--debug-vmcb", action="store_true", help="Add debug VMCB")
 
     parser.add_argument(
         "-n", "--dry-run", action="store_true", help="Print command without executing"
@@ -220,7 +220,7 @@ def build_qemu_command(args):
         qemu_args += args_network(ssh_port=args.ssh_port)
 
     if args.enable_snp:
-        qemu_args += args_snp(mem=args.mem, debug=not args.no_debug_snp)
+        qemu_args += args_snp(mem=args.mem, debug=args.debug_vmcb)
 
     return qemu_args
 
