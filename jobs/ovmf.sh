@@ -7,6 +7,11 @@ set -e          #  exit on error
 set -u          #  treat unset variables as an error
 set -x          #  print commands and their arguments as they are executed
 
+if ! command -v nasm &>/dev/null; then
+    echo "nasm could not be found, please install it"
+    exit 1
+fi
+
 PREFIX="/data/$USER/amdsev/usr"
 if [ !d "$PREFIX/share/qemu" ]; then
     echo "Directory $PREFIX/share/qemu does not exist, exiting"
@@ -31,20 +36,15 @@ set +eux
 . ./edksetup.sh --reconfig
 set -eux
 
-ACTIVE_PLATFORM=OvmfPkg/OvmfPkgX64.dsc
-TARGET=DEBUG
-TARGET_ARCH=X64
-TOOL_CHAIN_TAG=GCC
-MAX_CONCURRENT_THREAD_NUMBER=$(getconf _NPROCESSORS_ONLN)
-
 build \
     --quiet --cmd-len=64436 \
-    -p $ACTIVE_PLATFORM \
-    -b $TARGET \
-    -a $TARGET_ARCH \
-    -t $TOOL_CHAIN_TAG \
-    -n $MAX_CONCURRENT_THREAD_NUMBER \
-    -DDEBUG_ON_SERIAL_PORT=TRUE
+    -p OvmfPkg/OvmfPkgX64.dsc \
+    -b DEBUG \
+    -a X64 \
+    -t GCC \
+    -n $(getconf _NPROCESSORS_ONLN) \
+    -DDEBUG_ON_SERIAL_PORT=TRUE \
+    -Y COMPILE_INFO -y $(mktemp)
 
 cp -f Build/OvmfX64/DEBUG_GCC/FV/OVMF_CODE.fd "$PREFIX/share/qemu"
 cp -f Build/OvmfX64/DEBUG_GCC/FV/OVMF_VARS.fd "$PREFIX/share/qemu"
