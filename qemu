@@ -51,7 +51,7 @@ exec sudo $(which qemu-system-x86_64) \
     -netdev user,id=vmnic,hostfwd=tcp::2222-:22 \
     -device virtio-net-pci,disable-legacy=on,iommu_platform=true,netdev=vmnic,romfile= \
     -device virtio-rng-pci \
-    -drive file=$DISK,if=none,id=disk0,format=qcow2 \
+    -drive file=$DISK_OVERLAY,if=none,id=disk0,format=qcow2 \
     -device virtio-scsi-pci,id=scsi0,disable-legacy=on,iommu_platform=true \
     -device scsi-hd,drive=disk0 \
     -bios $UEFI_CODE \
